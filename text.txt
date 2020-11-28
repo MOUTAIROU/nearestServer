@@ -1,0 +1,133 @@
+{
+"id":"2",
+"username":"iskine",
+"password":"iskine",
+"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDMwMzI3MzcsImV4cCI6MTYwMzAzNjMzN30.uDzCPwEn4KncA2idz2LyxiEJPyuIC6RP1Gmklc7MMno"
+}
+
+{
+"id":"3",
+"username":"bastou",
+"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMiLCJ1c2VybmFtZSI6ImJhc3RvdSIsInBhc3N3b3JkIjoiYmFzdG91IiwiZXhwIjoxNjAzMDM4NjQ0fQ.XlLJ7qg081maG4rs91DZ6GFBUMePG4KvVU8LlaS2ovc"
+}
+
+{"id":"4","username":"zola",
+"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQiLCJ1c2VybmFtZSI6InpvbGEiLCJwYXNzd29yZCI6IkRlcnJpY2siLCJleHAiOjMxNzE0NzQ4MTM3MH0.YbBG8o2LoiguzsH_jhABFjY0dUM4rNLFJA0mRrnhdLY"
+}
+
+{
+"id":"5",
+"username":"shaid1",
+"password":"shaid1",
+"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNoYWlkMSIsInBhc3N3b3JkIjoic2hhaWQxIiwiZXhwIjozMTcxNDc4MDA3MzF9.-p4Kk1BLLVX3STRH0-orK35hZKnCb1R9fORsL62mX1w"
+}
+
+
+
+
+{
+"id": 8,
+"username":"shaid6",
+"password":"shaid6",
+"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNoYWlkNiIsInBhc3N3b3JkIjoic2hhaWQ2IiwiZXhwIjozMTcxNDc4MDEzNDF9.Lx5UKIedjGYQXHr41Ys78xWbSfw6V5zh4z4RjOZB7ag"
+}
+
+{
+"id": 9,
+"username":"shaid7",
+"password":"shaid7",
+"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6InNoYWlkNyIsImlkIjoiOSIsInVzZXJuYW1lIjoic2hhaWQ3IiwiZXhwIjozMTcxNDgxMDY3NjZ9.Otqj4uPiWLKi1C8omkc1xvFgkcIOdgKTZhtWDRMgBeQ"
+}
+
+{
+"id": 10,
+"username":"shaid8",
+"password":"shaid8",
+"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6InNoYWlkOCIsImlkIjoiMTAiLCJ1c2VybmFtZSI6InNoYWlkOCIsImV4cCI6MzE3MTQ4MTA2MDY5fQ.dX83AfzXE7iTrvqjLv2_HkS77Ko_AWHhsUzVQ5oAjSg"
+}
+
+{
+"id": 14,
+"username":"skano2",
+"password":"skano22",
+"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6InNrYW5vMjIiLCJpZCI6IjE0IiwidXNlcm5hbWUiOiJza2FubzIiLCJleHAiOjMxNzE0ODEwNTU1M30.7oBwbdiBPhTdtfwing0P0bRGKdjdMr1kQhxmnsRE_ac"
+}
+
+{
+"id": 15,
+"username":"ganiou",
+"password":"ganiou",
+"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImdhbmlvdSIsInBhc3N3b3JkIjoiZ2FuaW91IiwiaWQiOjE1LCJleHAiOjMxNzE0ODEwNzI4N30.rIPSE-eMnJmX4KuJ0Nocs4rpAD4iW6C4KfSlxuWWLdc"
+}
+
+{
+"id": 16,
+"username":"ganiou",
+"password":"ganiou",
+"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImlzaWFrIiwicGFzc3dvcmQiOiJpc2lhayIsImlkIjoxNiwiZXhwIjozMTcxNDgxMDc0NDl9.6jd9_1cJEmUuTiLmBPxJ1qS4ytt5QR7q_G0f_uh78L8"
+}
+
+/***********************client****************************/
+{
+"id": 1,
+username:bastou,
+telephone:746373884,
+"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJhc3RvdSIsInRlbGVwaG9uZSI6Ijc0NjM3Mzg4NCIsImlkIjoxLCJleHAiOjMxNzE0ODEwODIyMX0.GLXOTIS_9QRwET7j_YCCTc_fpNdHHy3ofs1G4SD001w"
+}
+
+{
+
+"id": 2,
+username :Bastou
+telephone :74637388
+"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkJhc3RvdSIsInRlbGVwaG9uZSI6Ijc0NjM3Mzg4IiwiaWQiOjIsImV4cCI6MzE3MTQ4MTA4MTczfQ.0_cS4129d6fhRAXhJGhdu3fM00pUMhT9Yd1O3Svs5r0"
+}
+
+{
+"id": 3,
+username :fahrame
+telephone :74637388
+
+"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZhaHJhbmUiLCJ0ZWxlcGhvbmUiOiI5ODQ2Mzc4IiwiaWQiOjMsImV4cCI6MzE3MTQ4MTA4MDIxfQ.2acz7NGBTZAyLNhwxf30OyN6mzrCVabLWB3BPmn76ic"
+}
+/****************************************************************:
+online_products = [
+{
+  "name":"AMPICILLINE TM 20 mg Gel",
+  "code":"74647293",
+  "prix":"1000",
+  "molecule":'AMPICILLINE',
+  "quantity":"true",      
+},
+{
+  "name":"BRUFEN 400 mg Ovule",
+  "code":"947473838",
+  "prix":"1300",
+  "molecule":'AMPICILLINE',
+  "quantity":"true",      
+},
+{
+  "name":"GYNO - PVARYL  150 mg Ovule",
+  "code":"007472838",
+  "prix":"500",
+  "molecule":'AMPICILLINE',
+  "quantity":"true",      
+},
+{
+  "name":"FORTALINE 93 g  Sirop",
+  "code":"792093299",
+  "prix":"1500",
+  "molecule":'AMPICILLINE',
+  "quantity":"true",      
+},
+{
+  "name":"ACCUZON 250 mg Poudre",
+  "code":"0483758";
+  "prix":"1500",
+  "molecule":'AMPICILLINE',
+  "quantity":"true",      
+}
+]
+
+
+
