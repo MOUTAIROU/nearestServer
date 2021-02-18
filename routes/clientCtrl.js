@@ -93,6 +93,8 @@ module.exports = {
 
     const { lat, lnt , rayon, search , ville} = req.body
 
+    console.log(req.body);
+
     var now = new Date();
     var current = [
           now.getHours(),
@@ -128,11 +130,11 @@ module.exports = {
                next(err)
              }else {
 
-
+                console.log(resultat);
                resultat.forEach((item,index) => {
 
                     let distance = HaversineInM(lat,lnt,item.latitude,item.longtitude)
-
+                     console.log(distance);
                    if( distance <= ConvertionInM(parseInt(rayon)) ){
 
                      item = {...item, distance}
@@ -140,6 +142,7 @@ module.exports = {
                    }
                 })
 
+                  console.log(tmp);
                 res.status(200).json({
                    'data':tmp.sort(ascendingOrder),
                  })
