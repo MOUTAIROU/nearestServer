@@ -2,6 +2,7 @@ var bcrypt = require('bcrypt');
 var jwtUtils = require('../utils/jwt.utils')
 var pool = require('../dbconfig/dbconfig')
 var multer  = require('multer')
+var twilioMsg = require('./twilioSms')
 
 
 var _eQuatorialEarthRadius = 6378.1370;
@@ -18,8 +19,6 @@ module.exports = {
 
        var today = new Date().toISOString().slice(0, 10)
 
-
-
        var userData = req.body
 
         if( username == null && telephone == null ){
@@ -28,7 +27,8 @@ module.exports = {
             next()
         }
 
-          SELECT_RESTO = `SELECT count(id) as count FROM client_users  WHERE  client_name='${username}' and client_telephone='${telephone}'`
+
+          SELECT_RESTO = `SELECT count(id) as count FROM client_users  WHERE  client_name='${username}' and client_telephone='${telephone.replace(/\s+/g, "")}'`
 
 
                pool.query(SELECT_RESTO,(err,resultat)=>{
@@ -40,28 +40,39 @@ module.exports = {
                          if(resultat[0].count == '0'){
 
 
-                             var INSERT = `INSERT INTO client_users ( client_name,client_telephone, date) VALUES ('${username}','${telephone}','${today}');SELECT LAST_INSERT_ID() as id`
+                             var INSERT = `INSERT INTO client_users ( client_name,client_telephone, date) VALUES ('${username}','${telephone.replace(/\s+/g, "")}','${today}');SELECT LAST_INSERT_ID() as id`
                              pool.query(INSERT,(err,result)=>{
 
                                  if(err){
                                    next(err)
                                  }else {
+
+                                       setTimeout(function() {
+                                       resetcode(telephone,id)
+                                       }, 150000);
+
                                       let id = result[1][0].id
 
-                                       userData = {...userData, id}
+                                       vericationCode(telephone.replace(/\s+/g, ""),id)
 
-                                   return res.status(201).json({
-                                     'id':id,
-                                     'token':jwtUtils.generateTokenForUser(userData)
-                                   })
-                                   next()
+                                       res.status(200).json({
+                                                   "success":"create",
+                                                    "id":id,
+                                                    "telephone":telephone.replace(/\s+/g, ""),
+                                                    "username":username
+                                                 })
+
+                                                 setTimeout(function() {
+                                                 resetcode(telephone,id)
+                                                 }, 150000);
+
                                  }
 
                              })
 
                          }else {
 
-                               SELECT_ID = `SELECT id FROM client_users  WHERE  client_name='${username}' and client_telephone='${telephone}'`
+                               SELECT_ID = `SELECT id FROM client_users  WHERE  client_name='${username}' and client_telephone='${telephone.replace(/\s+/g, "")}'`
 
                                pool.query(SELECT_ID,(err,result)=>{
 
@@ -69,13 +80,23 @@ module.exports = {
                                      next(err)
                                    }else {
 
+
                                         let id = result[0].id
-                                         userData = {...userData, id}
-                                         return res.status(201).json({
-                                            'id':id,
-                                            'token':jwtUtils.generateTokenForUser(userData)
-                                          })
-                                          next()
+
+
+                                             vericationCode(telephone.replace(/\s+/g, ""),id)
+
+
+                                            res.status(200).json({
+                                                        "success":"update",
+                                                         "id":id,
+                                                         "telephone":telephone.replace(/\s+/g, ""),
+                                                         "username":username
+                                                      })
+
+                                                      setTimeout(function() {
+                                                      resetcode(telephone,id)
+                                                      }, 150000);
                                    }
 
                                })
@@ -86,6 +107,46 @@ module.exports = {
                })
 
 
+  },
+  check_code_verication:function(req,res,next){
+
+    const { id , telephone , checkcode } = req.body
+
+
+    var today = new Date().toISOString().slice(0, 10)
+
+    var userData = {id , telephone}
+
+     if( id == null && telephone == null && checkcode == null ){
+
+         return res.status(400).json({'errors':'missing parameters'})
+         next()
+     }
+
+     SELECT_RESTO = `SELECT count(id) as count FROM client_users  WHERE  id='${id}' and client_telephone='${telephone.replace(/\s+/g, "")}' and checkCode='${checkcode}'`
+
+    console.log(SELECT_RESTO);
+     pool.query(SELECT_RESTO,(err,resultat)=>{
+
+         if(err){
+           next(err)
+         }else {
+                    console.log(resultat[0].count);
+               if(resultat[0].count !== '0'){
+
+                   userData = {...userData, id}
+                   return res.status(201).json({
+                      'id':id,
+                      'token':jwtUtils.generateTokenForUser(userData)
+                    })
+                    next()
+                 }else {
+                     return res.status(401).json({'error':'bad response'})
+                     next()
+                 }
+
+             }
+        })
   },
   search_product:function(req,res,next){
 
@@ -374,7 +435,7 @@ module.exports = {
 
             if(resultat[0].count == '0'){
 
-                 var INSERT = ` INSERT INTO client_compl_info ( nom, premon, telephone, email, ville, client_id) VALUES ('${nom}','${prenom}','${telephone}','${email}','${ville}','${id}')`
+                 var INSERT = ` INSERT INTO client_compl_info ( nom, premon, telephone, email, ville, client_id) VALUES ('${nom}','${prenom}','${telephone.replace(/\s+/g, "")}','${email}','${ville}','${id}')`
 
 
                       pool.query(INSERT,(inser_err,inser_result)=>{
@@ -393,7 +454,7 @@ module.exports = {
 
             }else {
 
-              var UPDATE= `UPDATE client_compl_info SET nom='${nom}',premon='${prenom}',telephone='${telephone}',email='${email}',ville='${ville}' WHERE client_id='${id}'`
+              var UPDATE= `UPDATE client_compl_info SET nom='${nom}',premon='${prenom}',telephone='${telephone.replace(/\s+/g, "")}',email='${email}',ville='${ville}' WHERE client_id='${id}'`
 
               pool.query(UPDATE,(inser_err,inser_result)=>{
                 if(inser_err){
@@ -537,4 +598,81 @@ function senday(){
 // a and b are object elements of your array
 function ascendingOrder(a,b) {
   return parseFloat(a.distance) - parseFloat(b.distance);
+}
+
+function vericationCode(telephone,id){
+
+  let code = Math.floor(Math.random()*9000) + 1000,
+      status = false
+
+    SELECT_RESTO = `SELECT count(id) as count FROM client_users  WHERE  id='${id}' and client_telephone='${telephone.replace(/\s+/g, "")}'`
+
+    pool.query(SELECT_RESTO,(err,resultat)=>{
+
+        if(err){
+          console.log(err);
+          status = false
+        }else {
+
+              if(resultat[0].count == '0'){
+
+
+                  var INSERT = `INSERT INTO client_users (checkCode) VALUES ('${code}') WHERE  id='${id}' and client_telephone='${telephone.replace(/\s+/g, "")}'`
+                  pool.query(INSERT,(err,result)=>{
+
+                      if(err){
+                        console.log(err);
+                        status =  false
+                      }else {
+
+                          twilioMsg.sendSms(telephone,code)
+                         console.log(' insert success ok');
+                        status =  true
+                      }
+
+                  })
+
+              }else {
+
+                    UPDATE_ID = `UPDATE client_users SET checkCode='${code}' WHERE id='${id}' and client_telephone='${telephone.replace(/\s+/g, "")}'`
+
+
+                    pool.query(UPDATE_ID,(err,result)=>{
+
+                        if(err){
+                           console.log(err);
+                          status =  false
+                        }else {
+                              console.log(' update success ok');
+                              twilioMsg.sendSms(telephone,code)
+                            status =  true
+                        }
+
+                    })
+
+              }
+        }
+
+    })
+
+    return status
+
+}
+
+function resetcode(telephone,id){
+  console.log("setTimeout");
+  console.log(telephone,id);
+  UPDATE_ID = `UPDATE client_users SET checkCode='000000' WHERE id='${id}'`
+
+
+  pool.query(UPDATE_ID,(err,result)=>{
+
+      if(err){
+         console.log(err);
+      }else {
+            console.log(' ok');
+
+      }
+
+  })
 }

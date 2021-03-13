@@ -21,7 +21,8 @@ exports.router = (function() {
   apiRouter.route('/client/search_phc_garde/').post(auth,clientCtrl.search_phc_garde);
   apiRouter.route('/client/client_compl_info/').post(auth,clientCtrl.client_compl_info);
   apiRouter.route('/client/client_contact/').post(auth,clientCtrl.client_contact);
-  
+  apiRouter.route('/client/check_code_verication/').post(clientCtrl.check_code_verication);
+
 
 
 

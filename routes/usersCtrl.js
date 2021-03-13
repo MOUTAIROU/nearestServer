@@ -290,6 +290,7 @@ module.exports = {
 
        const { id ,products } = req.body
 
+
        if( id == null || products == null){
 
           return res.status(406).json({"error":"parameters missing"})
@@ -434,7 +435,7 @@ module.exports = {
 
        if(resultat[0].count == '0'){
 
-             var INSERT = `INSERT INTO phc_employs (phc_id,name,prenom,telephone,role,mail,code) VALUES ('${id}','${nom}','${prenom}','${telephone}','${role}','${email}','${code+''+id}')`
+             var INSERT = `INSERT INTO phc_employs (phc_id,name,prenom,telephone,role,mail,code) VALUES ('${id}','${nom}','${prenom}','${telephone.replace(/\s+/g, "")}','${role}','${email}','${code+''+id}')`
 
                pool.query(INSERT,(err,result)=>{
                    if(err){
@@ -447,7 +448,7 @@ module.exports = {
        }
        else {
 
-           UPDATE =  `UPDATE phc_employs SET name='${nom}', prenom='${prenom}', telephone='${telephone}', role='${role}', mail='${email}' WHERE phc_id='${id}' and code='${code+''+id}'`
+           UPDATE =  `UPDATE phc_employs SET name='${nom}', prenom='${prenom}', telephone='${telephone.replace(/\s+/g, "")}', role='${role}', mail='${email}' WHERE phc_id='${id}' and code='${code+''+id}'`
 
            pool.query(UPDATE,(err,result)=>{
                if(err){
@@ -554,8 +555,6 @@ module.exports = {
        next()
     }
 
-
-    assurance
 
        var SELECT_RESTO = `SELECT count(id) as count FROM phc_gards WHERE  phc_id='${id}'`
 
