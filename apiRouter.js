@@ -11,6 +11,7 @@ exports.router = (function() {
 
   //Users routes
   apiRouter.route('/users/register/').post(usersCtrl.register);
+  apiRouter.route('/users/text/').get(usersCtrl.text);
 
   apiRouter.route('/client/register/').post(clientCtrl.register);
 

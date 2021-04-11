@@ -87,6 +87,20 @@ module.exports = {
 
 
   },
+  text: function(req, res, next) {
+
+  console.log('toto');
+
+    try{
+      res.send('Hello World!')
+      next()
+
+          }catch(err){
+            next(err);
+         }
+
+
+  },
   login: function(req, res, next) {
 
 
@@ -213,13 +227,7 @@ module.exports = {
   },
   set_profile_phc:function(req, res, next){
 
-    upload(req, res, function (err) {
 
-            if (err instanceof multer.MulterError) {
-                  return res.status(500).json(err)
-              } else if (err) {
-                  return res.status(500).json(err)
-              }
 
               const {phone1,phone2,ville,quartier,rue1,rue2,email,long,lat,id,intituler} = req.body
 
@@ -231,20 +239,19 @@ module.exports = {
                  next()
               }
 
-              const { originalname } = req.file
-              let img_lien = id+'_'+originalname
+
 
               SELECT_RESTO = `SELECT count(id) as count FROM phc_profiles  WHERE  phc_id='${id}'`
 
-              INSERT = `INSERT INTO phc_profiles (phc_id, img_lien, phone1, phone2, ville ,quartier, rue1 ,rue2, mail,longtitude,latitude,intituler) VALUES ('${parseInt(id)}','${img_lien}','${phone1}','${phone2}','${ville}','${quartier}','${rue1}','${rue2}','${email}','${parseFloat(long)}','${parseFloat(lat)}','${intituler}')`
+              INSERT = `INSERT INTO phc_profiles (phc_id, phone1, phone2, ville ,quartier, rue1 ,rue2, mail,longtitude,latitude,intituler) VALUES ('${parseInt(id)}','${phone1}','${phone2}','${ville}','${quartier}','${rue1}','${rue2}','${email}','${parseFloat(long)}','${parseFloat(lat)}','${intituler}')`
 
 
-               UPDATE = `UPDATE phc_profiles SET img_lien='${img_lien}',phone1='${phone1}',phone2='${phone2}',ville='${ville}',quartier='${quartier}',
+               UPDATE = `UPDATE phc_profiles SET phone1='${phone1}',phone2='${phone2}',ville='${ville}',quartier='${quartier}',
                rue1='${rue1}',rue2='${rue2}',mail='${email}',longtitude='${parseFloat(long)}',latitude='${parseFloat(lat)}',intituler='${intituler}' WHERE phc_id='${parseInt(id)}'`
 
               pool.query(SELECT_RESTO,(err,resultat)=>{
 
-                console.log(resultat[0].count);
+
                   if(resultat[0].count == '0'){
 
 
@@ -260,7 +267,7 @@ module.exports = {
                         })
 
                   }else {
-                      console.log(UPDATE);
+
                     pool.query(UPDATE,(updated_err,updated_resultat)=>{
 
                           if(updated_err){
@@ -279,10 +286,6 @@ module.exports = {
 
 
 
-
-
-
-     })
 
 
   },
