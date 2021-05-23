@@ -174,15 +174,26 @@ module.exports = {
      var currentInMinutes = getTimeAsNumberOfMinutes(current);
 
 
-     if( lat == null || lnt == null || rayon == null || search == null || ville == null){
+     if( lat == null || lnt == null || rayon == null || search == null){
 
         return res.status(406).json({"error":"parameters missing"})
         next()
      }
 
 
-      var SELECT = `SELECT  phc.phc_id, phc.img_lien, phc.phone1, phc.phone2, phc.ville, phc.quartier, phc.intituler, phc.rue1, phc.rue2, phc.mail, phc.longtitude,phc.latitude,drugs.name,
-        drugs.molecule , drugs.quantity ,drugs.price ,drugs.code ,${senday()} FROM phc_profiles as phc, phc_drugs as drugs, phc_gards as gards WHERE phc.ville='${ville}' and MATCH(drugs.name) AGAINST('${search}*' IN BOOLEAN MODE)`
+    //  var SELECT = `SELECT  phc.phc_id, phc.img_lien, phc.phone1, phc.phone2, phc.ville, phc.quartier, phc.intituler, phc.rue1, phc.rue2, phc.mail, phc.longtitude,phc.latitude,drugs.name,
+    //    drugs.molecule , drugs.quantity ,drugs.price ,drugs.code ,${senday()} FROM phc_profiles as phc, phc_drugs as drugs, phc_gards as gards WHERE phc.phc_id = drugs.phc_id and  phc.phc_id = gards.phc_id and MATCH(drugs.name) AGAINST('${search}*' IN BOOLEAN MODE)`
+
+//    var SELECT = `SELECT  phc.phc_id, phc.img_lien, phc.phone1, phc.phone2, phc.ville, phc.quartier, phc.intituler, phc.rue1, phc.rue2, phc.mail, phc.longtitude,phc.latitude,drugs.name,
+//      drugs.molecule , drugs.quantity ,drugs.price ,drugs.code ,${senday()} FROM phc_profiles as phc, phc_drugs as drugs, phc_gards as gards WHERE phc.phc_id = drugs.phc_id and  phc.phc_id = gards.phc_id and MATCH(drugs.name) AGAINST('${search}*' IN BOOLEAN MODE)`
+
+    var SELECT = `SELECT  phc.phc_id, phc.img_lien, phc.phone1, phc.phone2, phc.ville, phc.quartier, phc.intituler, phc.rue1, phc.rue2, phc.mail, phc.longtitude,phc.latitude,drugs.name,
+      drugs.molecule , drugs.quantity ,drugs.price ,drugs.code ,${senday()} FROM phc_profiles as phc, phc_drugs as drugs, phc_gards as gards WHERE phc.phc_id = drugs.phc_id and  phc.phc_id = gards.phc_id and drugs.name LIKE '%${search}%'`
+
+  console.log(SELECT);
+// "SELECT id,name FROM `hin` WHERE name LIKE '%". mysql_real_escape_string($q) ."%'"
+
+//drugs.name LIKE '%". mysql_real_escape_string(${search}) ."%'
 
 
         pool.query(SELECT,(err,resultat) => {
@@ -219,8 +230,9 @@ module.exports = {
   search_phc_proche:function(req,res,next){
     const { lat, lnt ,ville} = req.body
 
+   console.log(req.body);
 
-      if( lat == null || lnt == null || ville == null){
+      if( lat == null || lnt == null ){
 
          return res.status(406).json({"error":"parameters missing"})
          next()
@@ -229,8 +241,8 @@ module.exports = {
 
      var tmp = []
 
-        var SELECT = `SELECT  phc.phc_id, phc.img_lien, phc.phone1, phc.phone2, phc.ville, phc.quartier, phc.rue1, phc.rue2, phc.mail, phc.longtitude,phc.latitude
-        ,phc.intituler ,${senday()}  FROM phc_profiles as phc ,phc_gards as gards WHERE phc.ville='${ville}'`
+        var SELECT = `SELECT  phc.id,phc.phc_id, phc.img_lien, phc.phone1, phc.phone2, phc.ville, phc.quartier, phc.rue1, phc.rue2, phc.mail, phc.longtitude,phc.latitude
+        ,phc.intituler ,${senday()}  FROM phc_profiles as phc INNER JOIN phc_gards as gards ON phc.phc_id=gards.phc_id`
 
 
          pool.query(SELECT,(err,resultat) => {
@@ -240,7 +252,7 @@ module.exports = {
              }else {
 
 
-
+          console.log(resultat);
                resultat.forEach((item,index) => {
 
 
@@ -286,7 +298,8 @@ module.exports = {
      var tmp = []
 
      var SELECT = `SELECT  phc.phc_id, phc.img_lien, phc.phone1, phc.phone2, phc.ville, phc.quartier, phc.rue1, phc.rue2, phc.mail, phc.longtitude,phc.latitude, insurances.assurance,
-      phc.intituler,${senday()} FROM phc_profiles as phc, phc_insurances  as insurances, phc_gards as gards  WHERE phc.ville='${ville}' and MATCH(insurances.assurance) AGAINST('${search}*' IN BOOLEAN MODE)`
+      phc.intituler,${senday()} FROM phc_profiles as phc, phc_insurances as insurances, phc_gards as gards WHERE phc.phc_id = insurances.phc_id and  phc.phc_id = gards.phc_id and insurances.assurance LIKE '%${search}%'`
+
 
          pool.query(SELECT,(err,resultat) => {
 
@@ -294,6 +307,7 @@ module.exports = {
                next(err)
              }else {
 
+        console.log(resultat);
 
                resultat.forEach((item,index) => {
 
@@ -379,7 +393,8 @@ module.exports = {
 
     }
 
-    SELECT += ` FROM phc_profiles as phc, phc_gards as gards  WHERE phc.ville='${ville}'`
+    SELECT += ` FROM phc_profiles as phc INNER JOIN phc_gards as gards ON phc.phc_id=gards.phc_id`
+
 
 
         pool.query(SELECT,(err,resultat) => {

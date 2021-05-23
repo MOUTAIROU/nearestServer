@@ -326,7 +326,7 @@ module.exports = {
                       if (select_err){
                          next(select_err)
                       }else {
-                        res.status(200).json({'success':'success'})
+                        res.status(200).json({'success':'products has been successful inserted'})
                         next()
                       }
 
@@ -337,23 +337,73 @@ module.exports = {
 
          }else{
 
-
-           var SELECT = ``
+             var increment = 0
                products.forEach((item,index,products) => {
 
-                 SELECT += `UPDATE phc_drugs SET name='${item.name}',molecule='${item.molecule}',quantity='${item.quantity}',price='${item.price}',date='${today}' WHERE phc_id='${id}' and code = '${item.code+''+id}';`
+
+                    var CHECK_PRODUCT = `SELECT count(id) as count FROM phc_drugs  WHERE code='${item.code+''+id}'`
+
+
+                    pool.query(CHECK_PRODUCT,(select_err,result)=>{
+                       if (select_err){
+                          next(select_err)
+                       }else {
+
+                            if(result[0].count == '1'){
+
+                              UPDATE_PRODUCT = `UPDATE phc_drugs SET name='${item.name}',molecule='${item.molecule}',quantity='${item.quantity}',price='${item.price}',date='${today}' WHERE code = '${item.code+''+id}'`
+
+
+                                  pool.query(UPDATE_PRODUCT,(select_err_,resultat_)=>{
+                                     if (select_err_){
+                                        next(select_err_)
+                                     }else {
+
+                                        increment = increment + 1
+
+
+                                        if(products.length == increment){
+                                          res.status(200).json({'success':'products has been successful updated'})
+                                          next()
+                                        }
+
+
+                                     }
+
+                                  })
+
+                            }else {
+
+                              INSERT_PRODUCT = `INSERT INTO phc_drugs (phc_id, name, molecule, quantity, price, code, date) VALUES ('${id}','${item.name}','${item.molecule}','${item.quantity}','${item.price}','${item.code+''+id}','${today}')`
+
+                                pool.query(INSERT_PRODUCT,(select_err__,resultat__)=>{
+                                   if (select_err__){
+                                      next(select_err__)
+                                   }else {
+
+                                     increment = increment + 1
+
+
+                                        if(products.length == increment){
+                                          res.status(200).json({'success':'products has been successful updated'})
+                                          next()
+                                        }
+
+                                   }
+
+                                })
+
+
+                            }
+                       }
+
+
+                    })
+
 
                })
 
-               pool.query(SELECT,(select_err,result)=>{
-                  if (select_err){
-                     next(select_err)
-                  }else {
-                    res.status(200).json({'success':'success'})
-                    next()
-                  }
 
-               })
 
          }
 
@@ -522,25 +572,73 @@ module.exports = {
 
            }else {
 
-
-                  var UPDATE = ``
+                var increment = 0
 
                   assurance.forEach((item,index,assurance) => {
 
-                    UPDATE += `UPDATE phc_insurances SET assurance='${item.assurance}',date='${today}' WHERE phc_id='${id}' and insurance_id = '${item.code+''+id}';`
+                  
+                      var CHECK_ASSURANCE = `SELECT count(id) as count FROM phc_insurances  WHERE insurance_id = '${item.code+''+id}'`
+
+
+                      pool.query(CHECK_ASSURANCE,(select_err,result)=>{
+                         if (select_err){
+                            next(select_err)
+                         }else {
+
+                              if(result[0].count == '1'){
+
+
+                                UPDATE_ASSURANCE = `UPDATE phc_insurances SET assurance='${item.assurance}',date='${today}' WHERE insurance_id = '${item.code+''+id}'`
+
+                                      pool.query(UPDATE_ASSURANCE,(select_err_,resultat_)=>{
+                                         if (select_err_){
+                                            next(select_err_)
+                                         }else {
+
+                                            increment = increment + 1
+
+
+                                            if(assurance.length == increment){
+                                              res.status(200).json({'success':'inssurance has been successful updated'})
+                                              next()
+                                            }
+
+
+                                         }
+
+                                      })
+
+
+                              }else {
+
+
+                                INSERT_ASSURANCE = `INSERT INTO phc_insurances (phc_id, insurance_id, assurance,date) VALUES ('${id}','${item.code+''+id}','${item.assurance}','${today}')`
+
+                                pool.query(INSERT_ASSURANCE,(select_err__,resultat__)=>{
+                                   if (select_err__){
+                                      next(select_err_)
+                                   }else {
+                                     increment = increment + 1
+
+
+                                        if(assurance.length == increment){
+                                          res.status(200).json({'success':'inssurance has been successful updated'})
+                                          next()
+                                        }
+
+                                   }
+
+                                })
+                              }
+                         }
+
+                      })
+
 
                   })
 
 
-                        pool.query(UPDATE,(select_err,result)=>{
-                           if (select_err){
-                              next(select_err)
-                           }else {
-                             res.status(200).json({'success':'insurance has been update successful'})
-                             next()
-                           }
 
-                        })
 
            }
 
